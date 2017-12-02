@@ -1,0 +1,37 @@
+[
+  {
+    "event": "irc_looking_up_hostname",
+    "pattern": "^\\:\\S+ NOTICE.*Looking up your hostname",
+    "capture": false
+  },
+  {
+    "event": "irc_checking_ident",
+    "pattern": "^\\:\\S+ NOTICE.*Checking Ident",
+    "capture": false
+  },
+  {
+    "event": "irc_found_hostname",
+    "pattern": "^\\:\\S+ NOTICE.*Found your hostname",
+    "capture": false
+  },
+  {
+    "event": "irc_capability_list",
+    "pattern": "^\\:\\S+ CAP \\* LS.*",
+    "capture": false
+  },
+  {
+    "event": "irc_welcome",
+    "pattern": "^\\:\\S+ 001",
+    "capture": false
+  },
+  {
+    "event": "irc_ping",
+    "pattern": "^PING \\:(.*)",
+    "capture": true
+  },
+  {
+    "event": "irc_privmsg",
+    "pattern": "^\\:(\\S+)!(\\S+)@(\\S+) PRIVMSG (\\S+) \\:(.*)",
+    "capture": true
+  }
+]

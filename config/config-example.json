@@ -1,0 +1,12 @@
+{
+  "irc": {
+    "server": "irc.server.net",
+    "port": "6667",
+    "use_tls": true,
+    "nick": "nick",
+    "username": "username",
+    "realname": "realname",
+    "capabilities": [],
+    "channels": "#channel"
+  }
+}
