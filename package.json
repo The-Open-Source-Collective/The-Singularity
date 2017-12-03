@@ -1,0 +1,19 @@
+{
+  "name": "ai-irc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/Bot.js",
+  "scripts": {
+    "test": "tsc && node dist/Bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Syekiya/AI-IRC.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Syekiya/AI-IRC/issues"
+  },
+  "homepage": "https://github.com/Syekiya/AI-IRC#readme"
+}
