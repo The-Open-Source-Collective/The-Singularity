@@ -1,22 +1,11 @@
-import {Hook} from "./Hook";
+import {Hooks} from "./Hooks";
 
 export class Bot {
 
     constructor() {
-        let hooks = new Hook();
-        hooks.add("test");
-        hooks.register("test", this.testHook);
-        hooks.call("test", this);
+        let hooks = new Hooks();
     }
 
-    testHook(that: any) {
-        console.log("testing hook");
-        that.test();
-    }
-
-    test() {
-        console.log("inceprion");
-    }
 }
 
 let bot = new Bot();

@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Hook_1 = require("./Hook");
+var Hooks_1 = require("./Hooks");
 var Bot = /** @class */ (function () {
     function Bot() {
-        var hooks = new Hook_1.Hook();
+        var hooks = new Hooks_1.Hooks();
         hooks.add("test");
-        hooks.register("test", this.testHook);
-        hooks.call("test", this);
+        console.log(hooks);
+        hooks.delete("test");
+        console.log(hooks);
     }
     Bot.prototype.testHook = function (that) {
         console.log("testing hook");
