@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Syekiya/AI-IRC/issues"
   },
-  "homepage": "https://github.com/Syekiya/AI-IRC#readme"
+  "homepage": "https://github.com/Syekiya/AI-IRC#readme",
+  "dependencies": {
+    "irc": "^0.5.2"
+  },
+  "devDependencies": {
+    "@types/irc": "^0.3.32"
+  }
 }
