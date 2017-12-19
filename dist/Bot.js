@@ -1,20 +1,53 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Hooks_1 = require("./Hooks");
-var IRC_1 = require("./Connections/IRC");
-var Bot = /** @class */ (function () {
-    function Bot() {
-        var hooks = new Hooks_1.Hooks();
-        var irc = new IRC_1.IRC("irc.alphachat.net", 6667, "Alexa", "Alexa", "Alexa IRC AI");
-        irc.on("motd", function () {
+const Hooks_1 = require("./Hooks");
+const IRC_1 = require("./Connections/IRC");
+const Discord_1 = require("./Connections/Discord");
+const Ark_1 = require("./Connections/Ark");
+const jsonfile = require("jsonfile");
+class Bot {
+    constructor() {
+        this._initConfig();
+        this._initHooks();
+        this._initArk();
+        this._initIRC();
+        this._initDiscord();
+        this._addCoreHooks();
+    }
+    _initConfig() {
+        let config = jsonfile.readFileSync(__dirname + "/config.json");
+        this.config = config;
+    }
+    _initHooks() {
+        this.hooks = new Hooks_1.Hooks();
+    }
+    _initArk() {
+        this.ark = new Ark_1.Ark(this.config.ark.host, this.config.ark.port, this.config.ark.password);
+    }
+    _initIRC() {
+        this.irc = new IRC_1.IRC(this.config.irc.host, this.config.irc.port, this.config.irc.nick, this.config.irc.ident, this.config.irc.realname);
+        let irc = this.irc;
+        let ark = this.ark;
+    }
+    _initDiscord() {
+        this.discord = new Discord_1.Discord(this.config.discord.token);
+    }
+    _addCoreHooks() {
+        let irc = this.irc;
+        let ark = this.ark;
+        let discord = this.discord;
+        this.irc.on("motd", () => {
             irc.join("#ark");
+            irc.join("#alexa");
         });
-        irc.on("join", function (channel, nick) {
-            console.log(channel);
-            irc.msg(channel, "I'm here...");
+        this.irc.on("message", (from, to, message) => {
+            if (to == "#Ark" && message == "!players") {
+                ark.exec("ListPlayers", (response) => {
+                    irc.msg("#ark", response);
+                });
+            }
         });
     }
-    return Bot;
-}());
+}
 exports.Bot = Bot;
-var bot = new Bot();
+let bot = new Bot();

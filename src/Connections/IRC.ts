@@ -59,6 +59,8 @@ export class IRC {
     }
 
     msg(dest: string, message: string) {
-        this.connection.say(dest, message);
+        if (message) {
+            this.connection.say(dest, message);
+        }
     }
 }

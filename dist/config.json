@@ -1,0 +1,26 @@
+{
+
+  "name": "Alexa",
+  "version": "0.3.0",
+
+  "ark": {
+    "host": "173.208.221.82",
+    "port": 32332,
+    "password": "dogshit!!!"
+  },
+
+  "irc": {
+    "nick": "Alexa",
+    "ident": "Alexa",
+    "realname": "Alexa AI Bot",
+    "host": "irc.alphachat.net",
+    "port": 6667,
+    "ssk": "false",
+    "password": ""
+  },
+
+  "discord": {
+    "token": "Mzg3MTA2OTQzMjUwMjAyNjI1.DQZo_A.0qajKxAqu6OOGkNyU8XvvS4QEBE"
+  }
+
+}

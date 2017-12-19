@@ -1,46 +1,44 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Hooks = /** @class */ (function () {
-    function Hooks() {
+class Hooks {
+    constructor() {
         this.hooks = new Array();
     }
-    Hooks.prototype.add = function (hook) {
+    add(hook) {
         this.hooks.push(new Hook(hook));
-    };
-    Hooks.prototype.delete = function (name) {
-        var hooks = this.hooks;
-        this.hooks.forEach(function (hook, id) {
+    }
+    delete(name) {
+        let hooks = this.hooks;
+        this.hooks.forEach((hook, id) => {
             if (hook.name == name) {
                 delete hooks[id];
             }
         });
-    };
-    Hooks.prototype.register = function (name, callback) {
-        this.hooks.forEach(function (hook) {
+    }
+    register(name, callback) {
+        this.hooks.forEach((hook) => {
             if (hook.name == name) {
                 hook.callbacks.push(callback);
             }
         });
-    };
-    Hooks.prototype.call = function (name, that) {
-        this.hooks.forEach(function (hook) {
+    }
+    call(name, that) {
+        this.hooks.forEach((hook) => {
             if (hook.name == name) {
                 hook.trigger(that);
             }
         });
-    };
-    return Hooks;
-}());
+    }
+}
 exports.Hooks = Hooks;
-var Hook = /** @class */ (function () {
-    function Hook(name) {
+class Hook {
+    constructor(name) {
         this.name = name;
         this.callbacks = new Array();
     }
-    Hook.prototype.trigger = function (that) {
-        this.callbacks.forEach(function (callback) {
+    trigger(that) {
+        this.callbacks.forEach((callback) => {
             callback(that);
         });
-    };
-    return Hook;
-}());
+    }
+}

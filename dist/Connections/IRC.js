@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var irc = require("irc");
-var IRC = /** @class */ (function () {
-    function IRC(server, port, nick, ident, realName) {
+const irc = require("irc");
+class IRC {
+    constructor(server, port, nick, ident, realName) {
         this.server = server;
         this.port = port;
         this.nick = nick;
         this.ident = ident;
         this.realName = realName;
-        var options = {
+        let options = {
             "userName": this.ident,
             "realName": this.realName,
             "port": this.port,
@@ -33,22 +33,15 @@ var IRC = /** @class */ (function () {
         this.connection.addListener('message', function (from, to, message) {
             console.log(from + ' => ' + to + ': ' + message);
         });
-        var bot = this;
-        this.connection.addListener('message', function (from, to, message) {
-            if (message == "!test") {
-            }
-        });
     }
-    IRC.prototype.on = function (event, callback) {
+    on(event, callback) {
         this.connection.addListener(event, callback);
-    };
-    IRC.prototype.join = function (channel, password) {
-        if (password === void 0) { password = ""; }
+    }
+    join(channel, password = "") {
         this.connection.join(channel, null, password);
-    };
-    IRC.prototype.msg = function (dest, message) {
+    }
+    msg(dest, message) {
         this.connection.say(dest, message);
-    };
-    return IRC;
-}());
+    }
+}
 exports.IRC = IRC;
