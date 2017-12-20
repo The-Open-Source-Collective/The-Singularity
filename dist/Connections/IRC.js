@@ -41,7 +41,9 @@ class IRC {
         this.connection.join(channel, null, password);
     }
     msg(dest, message) {
-        this.connection.say(dest, message);
+        if (message) {
+            this.connection.say(dest, message);
+        }
     }
 }
 exports.IRC = IRC;

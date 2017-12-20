@@ -17,8 +17,14 @@
   },
   "homepage": "https://github.com/Syekiya/AI-IRC#readme",
   "dependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.0.39",
+    "@types/github": "^7.1.0",
     "@types/jsonfile": "^4.0.1",
+    "body-parser": "^1.18.2",
     "discord.js": "^11.2.1",
+    "express": "^4.16.2",
+    "github": "^13.0.1",
     "irc": "^0.5.2",
     "jsonfile": "^4.0.0",
     "rcon": "^1.0.3"

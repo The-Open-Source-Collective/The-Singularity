@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Hooks_1 = require("./Hooks");
+const APIServer_1 = require("./APIServer");
+const Modules_1 = require("./Modules");
 const IRC_1 = require("./Connections/IRC");
 const Discord_1 = require("./Connections/Discord");
 const Ark_1 = require("./Connections/Ark");
@@ -9,6 +11,8 @@ class Bot {
     constructor() {
         this._initConfig();
         this._initHooks();
+        this._initAPIServer();
+        this._initModules();
         this._initArk();
         this._initIRC();
         this._initDiscord();
@@ -20,6 +24,12 @@ class Bot {
     }
     _initHooks() {
         this.hooks = new Hooks_1.Hooks();
+    }
+    _initAPIServer() {
+        this.apiServer = new APIServer_1.APIServer(this.config.api.port, this);
+    }
+    _initModules() {
+        this.modules = new Modules_1.Modules(this);
     }
     _initArk() {
         this.ark = new Ark_1.Ark(this.config.ark.host, this.config.ark.port, this.config.ark.password);

@@ -1,4 +1,6 @@
 import {Hooks} from "./Hooks";
+import {APIServer} from "./APIServer";
+import {Modules} from "./Modules";
 import {IRC} from "./Connections/IRC";
 import {Discord} from "./Connections/Discord";
 import {Ark} from "./Connections/Ark";
@@ -11,17 +13,21 @@ export class Bot {
     irc: IRC;
     discord: Discord;
     ark: Ark;
+    modules: Modules;
+    apiServer: APIServer;
 
     config: any;
 
     constructor() {
         this._initConfig();
         this._initHooks();
+        this._initAPIServer();
         this._initArk();
         this._initIRC();
         this._initDiscord();
 
         this._addCoreHooks();
+        this._initModules();
 
     }
 
@@ -35,6 +41,14 @@ export class Bot {
         this.hooks = new Hooks();
     }
 
+    _initAPIServer() {
+        this.apiServer = new APIServer(this.config.api.port, this);
+    }
+
+    _initModules() {
+        this.modules = new Modules(this);
+    }
+
     _initArk() {
         this.ark = new Ark(this.config.ark.host, this.config.ark.port, this.config.ark.password);
     }
@@ -43,7 +57,6 @@ export class Bot {
         this.irc = new IRC(this.config.irc.host, this.config.irc.port, this.config.irc.nick, this.config.irc.ident, this.config.irc.realname);
         let irc = this.irc;
         let ark = this.ark;
-
     }
 
     _initDiscord() {
