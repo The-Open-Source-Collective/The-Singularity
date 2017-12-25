@@ -19,8 +19,8 @@ export class APIServer {
 
         this.bot = Bot;
         this.server.post('/github', (req: any, res: any) => {
-            console.log(req.body.repository.name);
             bot.irc.msg("#alexa", "[GITHUB] new push on " + req.body.repository.name + "/" + req.body.ref.replace('refs/heads/', "") + " by " + req.body.pusher.name + " " + req.body.compare);
+            bot.discord.msg("alexa", "[GITHUB] new push on " + req.body.repository.name + "/" + req.body.ref.replace('refs/heads/', "") + " by " + req.body.pusher.name + " " + req.body.compare);
         });
     }
 

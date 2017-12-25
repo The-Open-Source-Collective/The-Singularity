@@ -13,4 +13,16 @@ export class Discord {
         this.connection.login(this.token);
     }
 
+    on(event:string, callback:any) {
+        this.connection.addListener(event, callback);
+    }
+
+    msg(room: string, message: string) {
+        this.connection.channels.forEach((channel: any) => {
+            if (room == channel.name) {
+                channel.sendMessage(message);
+            }
+        });
+    }
+
 }
