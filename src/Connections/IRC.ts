@@ -43,11 +43,6 @@ export class IRC {
         };
 
         this.connection = new irc.Client(this.server, this.nick, options);
-
-        this.connection.addListener('message', function (from:string, to:string, message:string) {
-            console.log(from + ' => ' + to + ': ' + message);
-        });
-
     }
 
     on(event:string, callback:any) {

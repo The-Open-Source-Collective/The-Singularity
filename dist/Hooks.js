@@ -42,3 +42,4 @@ class Hook {
         });
     }
 }
+//# sourceMappingURL=Hooks.js.map

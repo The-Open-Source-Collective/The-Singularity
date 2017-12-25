@@ -20,8 +20,6 @@ export class Ark {
         let Ark = this;
         request.post('http://'+this.host+':'+this.port+'/'+cmd, { api_key: Ark.password }, (err: any, res: any, body: any) => {
             if (err) { return console.log(err); }
-            console.log(body.url);
-            console.log(body.explanation);
 
             Ark.responder = responseCallback(body);
         });

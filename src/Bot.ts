@@ -22,13 +22,13 @@ export class Bot {
         this._initConfig();
         this._initHooks();
         this._initAPIServer();
+
         this._initArk();
         this._initIRC();
         this._initDiscord();
 
         this._addCoreHooks();
         this._initModules();
-
     }
 
     _initConfig() {
@@ -69,15 +69,21 @@ export class Bot {
         let discord = this.discord;
 
         this.irc.on("motd", () => {
-            irc.join("#ark");
-            irc.join("#alexa");
+            let channels = this.config.irc.channels;
+            channels.forEach((channel: string) => {
+                irc.join(channel);
+            });
+        });
+
+        this.discord.on('message', (msg: any) => {
+           if (msg.channel.name == "alexa" && msg.author.username != "Alexa") {
+               irc.msg("#alexa", "[DISCORD]["+msg.author.username+"] " + msg.content);
+           }
         });
 
         this.irc.on("message", (from: string, to: string, message: string) => {
-            if (to == "#Ark" && message == "!players") {
-                ark.exec("ListPlayers", (response: string) => {
-                    irc.msg("#ark", response);
-                });
+            if (to == "#alexa" && from != this.config.irc.nick) {
+                discord.msg("alexa", "[IRC][" + from + "] " + message);
             }
         });
     }

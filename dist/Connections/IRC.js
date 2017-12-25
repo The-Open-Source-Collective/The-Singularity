@@ -30,9 +30,6 @@ class IRC {
             "encoding": ""
         };
         this.connection = new irc.Client(this.server, this.nick, options);
-        this.connection.addListener('message', function (from, to, message) {
-            console.log(from + ' => ' + to + ': ' + message);
-        });
     }
     on(event, callback) {
         this.connection.addListener(event, callback);
@@ -47,3 +44,4 @@ class IRC {
     }
 }
 exports.IRC = IRC;
+//# sourceMappingURL=IRC.js.map
