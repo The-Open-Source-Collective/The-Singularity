@@ -6,3 +6,4 @@ class github {
     }
 }
 exports.github = github;
+//# sourceMappingURL=github.js.map
