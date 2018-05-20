@@ -109,7 +109,13 @@ export class Bot {
 
         this.discord.on("message", (msg: any) => {
             if (msg.content == "!v") {
-
+                msg.reply('```\r\n'
+                                + '[Voice Support Module]\n'
+                                + '!v - I will show you this help message.\n'
+                                + '!v init - I will join the voice channel you are in. All other commands will require me being in your voice channel.\n'
+                                + '!v say <message> - I will dictate this for you.\n'
+                                + '!v play <url> - I will play a mp3 file or YouTube Video, well, the audio only.\n'
+                                + '```');
             } else if (msg.content.startsWith("!v ")) {
                 let bits = msg.content.split(" ");
                 let command = bits[0];
