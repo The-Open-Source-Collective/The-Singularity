@@ -6,7 +6,10 @@ const IRC_1 = require("./Connections/IRC");
 const Discord_1 = require("./Connections/Discord");
 const Ark_1 = require("./Connections/Ark");
 const jsonfile = require("jsonfile");
+let textToSpeech = require('@google-cloud/text-to-speech');
+let Readable = require('stream').Readable;
 let LastfmAPI = require('lastfmapi');
+let ytdl = require('ytdl-core');
 class Bot {
     constructor() {
         this._initConfig();
@@ -72,86 +75,70 @@ class Bot {
             }
         });
         this.discord.on("message", (msg) => {
-            if (msg.content.startsWith("!v")) {
-                if (msg.member.voiceChannel) {
-                    msg.member.voiceChannel.join()
-                        .then((connection) => {
-                        connection.playArbitraryInput("http://dora-robo.com/muzyka/70's-80's-90's%20/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3");
-                        let reciever = connection.createReceiver();
-                        reciever.on("opus", (talker, buffer) => {
-                            console.log(buffer.length);
-                        });
-                        /*let avs =  new AVS({
-                            debug: true,
-                            clientId: "amzn1.application-oa2-client.647952a964fe453594ad73446d608609",
-                            clientSecret: "15cba8d6ca172a5aa93517f4d7c850f8b1513f037b6efca00bf00e72aad41c0b",
-                            deviceId: "TheRedQueen",
-                            refreshToken: ""
-                        });
-
-
-                        let reciever = connection.createReceiver();
-                        reciever.on("opus", (talker: discordjs.UserResolvable, buffer: discordjs.BufferResolvable) => {
-                            console.log(buffer);
-                        });
-                        reciever.on("pcm", (talker:discordjs.UserResolvable, buffer: any) => {
-                            console.log(talker);
-                            avs.sendAudio(buffer)
-                            .then(({xhr, response}) => {
-                                var promises = [];
-                                var audioMap = {};
-                                var directives = null;
-
-                                if (response.multipart.length) {
-                                    console.log(response.multipart.length);
-                                    response.multipart.forEach((multipart: any) => {
-                                        let body = multipart.body;
-                                        if (multipart.headers && multipart.headers['Content-Type'] === 'application/json') {
-                                            try {
-                                                body = JSON.parse(body);
-                                            } catch (error) {
-                                                console.error(error);
-                                            }
-
-                                            if (body && body.messageBody && body.messageBody.directives) {
-                                                directives = body.messageBody.directives;
-                                            }
-                                        } else if (multipart.headers['Content-Type'] === 'audio/mpeg') {
-                                            const start = multipart.meta.body.byteOffset.start;
-                                            const end = multipart.meta.body.byteOffset.end;
-
-
-                                            var slicedBody = xhr.response.slice(start, end);
-
-                                            //promises.push(avs.player.enqueue(slicedBody));
-                                            audioMap[multipart.headers['Content-ID']] = slicedBody;
-                                        }
-                                    });
-                                }
+            if (msg.content == "!v") {
+            }
+            else if (msg.content.startsWith("!v ")) {
+                let bits = msg.content.split(" ");
+                let command = bits[0];
+                let args = bits.slice(1);
+                switch (args[0]) {
+                    case "init":
+                        if (msg.member.voiceChannel) {
+                            msg.member.voiceChannel.join()
+                                .catch((error) => {
+                                msg.reply("I've made the following mistake: " + error.toString());
                             });
-                        });
-
-
-                        avs.on(AVS.EventTypes.LOG, () => {
-                            console.log(this);
-                        });
-                        avs.on(AVS.EventTypes.ERROR, () => {
-                            console.log(this);
-                        });
-
-                        avs.player.on(AVS.Player.EventTypes.LOG, () => {
-                            console.log();
-                        });
-                        avs.player.on(AVS.Player.EventTypes.ERROR, () => {
-                            console.log();
-                        });
-                        */
-                        //avs.login({responseType: 'code'});
-                    })
-                        .catch(console.log);
-                }
-                else {
-                    msg.reply('You need to join a voice channel first!');
+                        }
+                        else {
+                            msg.reply('please join the channel you want me to join first.');
+                        }
+                        break;
+                    case "play":
+                        if (discord.connection.voice.connections.first()) {
+                            let voice = discord.connection.voice.connections.first();
+                            if (ytdl.validateURL(args[1])) {
+                                let stream = ytdl(args[1], {
+                                    filter: (format) => {
+                                        return format.container === 'm4a' && !format.encoding;
+                                    }
+                                });
+                                voice.playStream(stream);
+                            }
+                            else {
+                                voice.playArbitraryInput(args[1]);
+                            }
+                        }
+                        else {
+                            msg.reply('please run the `!v init` command first.');
+                        }
+                        break;
+                    case "say":
+                        if (discord.connection.voice.connections.first()) {
+                            let voice = discord.connection.voice.connections.first();
+                            // Creates a client
+                            const client = new textToSpeech.TextToSpeechClient();
+                            const text = args.splice(1);
+                            const request = {
+                                input: { text: text },
+                                voice: { languageCode: 'en-US', ssmlGender: 'FEMALE' },
+                                audioConfig: { audioEncoding: 'MP3' },
+                            };
+                            client.synthesizeSpeech(request, (err, response) => {
+                                if (err) {
+                                    console.error('ERROR:', err);
+                                    return;
+                                }
+                                let stream = new Readable;
+                                stream._read = function noop() { };
+                                stream.push(response.audioContent);
+                                stream.push(null);
+                                voice.playStream(stream);
+                            });
+                        }
+                        else {
+                            msg.reply('please run the `!v init` command first.');
+                        }
+                        break;
                 }
             }
         });

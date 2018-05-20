@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Syekiya/AI-IRC#readme",
   "dependencies": {
+    "@google-cloud/text-to-speech": "^0.1.0",
     "@types/alexa-voice-service": "0.0.0",
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.11.1",
@@ -35,7 +36,8 @@
     "lastfmapi": "^0.1.1",
     "node-opus": "^0.3.0",
     "rcon": "^1.0.3",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "ytdl-core": "^0.20.4"
   },
   "devDependencies": {
     "@types/irc": "^0.3.32"
