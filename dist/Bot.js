@@ -41,6 +41,8 @@ class Bot {
     _initDiscord() {
         this.discord = new Discord_1.Discord(this.config.discord.token);
     }
+    _initModules() {
+    }
     _addCoreHooks() {
         let irc = this.irc;
         let ark = this.ark;
@@ -82,6 +84,7 @@ class Bot {
                     + '!v init - I will join the voice channel you are in. All other commands will require me being in your voice channel.\n'
                     + '!v say <message> - I will dictate this for you.\n'
                     + '!v play <url> - I will play a mp3 file or YouTube Video, well, the audio only.\n'
+                    + '!v quit - Bye, Felica.\n'
                     + '```');
             }
             else if (msg.content.startsWith("!v ")) {
@@ -146,13 +149,19 @@ class Bot {
                             msg.reply('please run the `!v init` command first.');
                         }
                         break;
+                    case "quit":
+                        if (discord.connection.voice.connections.first()) {
+                            let voice = discord.connection.voice.connections.first();
+                            voice.disconnect();
+                        }
+                        break;
                 }
             }
         });
         this.irc.on("message", (from, to, message) => {
             if (message.startsWith("!np")) {
                 let username = message.split(" ")[1];
-                this.lastfm.user.getRecentTracks({ "user": username, "limit": 1 }, (error, tracks) => {
+                this.lastfm.user.getRecentTracks({ user: username, "limit": 1 }, (error, tracks) => {
                     if (tracks.track[0] !== 'undefined') {
                         let np = tracks.track[0];
                         if (np['@attr'].nowplaying == 'true') {

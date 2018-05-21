@@ -22,7 +22,7 @@ export class Bot {
     discord: Discord;
     ark: Ark;
     apiServer: APIServer;
-    avs: any;
+    modules: Array<object>;
 
     lastfm: any;
 
@@ -66,6 +66,10 @@ export class Bot {
 
     _initDiscord() {
         this.discord = new Discord(this.config.discord.token);
+    }
+
+    _initModules() {
+
     }
 
     _addCoreHooks() {
@@ -115,6 +119,7 @@ export class Bot {
                                 + '!v init - I will join the voice channel you are in. All other commands will require me being in your voice channel.\n'
                                 + '!v say <message> - I will dictate this for you.\n'
                                 + '!v play <url> - I will play a mp3 file or YouTube Video, well, the audio only.\n'
+                                + '!v quit - Bye, Felica.\n'
                                 + '```');
             } else if (msg.content.startsWith("!v ")) {
                 let bits = msg.content.split(" ");
@@ -183,6 +188,14 @@ export class Bot {
                             msg.reply('please run the `!v init` command first.');
                         }
                         break;
+
+                    case "quit":
+                        if (discord.connection.voice.connections.first()) {
+                            let voice: VoiceConnection = discord.connection.voice.connections.first();
+
+                            voice.disconnect();
+                        }
+                        break;
                 }
 
             }
@@ -191,7 +204,7 @@ export class Bot {
         this.irc.on("message", (from: string, to: string, message: string) => {
             if (message.startsWith("!np")) {
                 let username = message.split(" ")[1];
-                this.lastfm.user.getRecentTracks({"user": username, "limit": 1}, (error: any, tracks: any) => {
+                this.lastfm.user.getRecentTracks({user: username, "limit": 1}, (error: any, tracks: any) => {
                     if (tracks.track[0] !== 'undefined') {
                         let np = tracks.track[0];
                         if (np['@attr'].nowplaying == 'true') {
