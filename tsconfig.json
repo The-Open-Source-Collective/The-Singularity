@@ -59,6 +59,11 @@
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "strictPropertyInitialization": false
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "gulpfile.js"
+  ]
 
 }

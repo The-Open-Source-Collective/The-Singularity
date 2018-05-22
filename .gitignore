@@ -59,4 +59,4 @@ typings/
 
 .idea
 
-dist/config.json
+dist/

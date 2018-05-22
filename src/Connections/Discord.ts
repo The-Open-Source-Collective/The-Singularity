@@ -20,7 +20,7 @@ export class Discord {
     msg(room: string, message: string) {
         this.connection.channels.forEach((channel: discord.TextChannel) => {
             if (room == channel.name) {
-                channel.sendMessage(message);
+                channel.send(message);
             }
         });
     }

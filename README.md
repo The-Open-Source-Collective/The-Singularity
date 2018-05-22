@@ -5,6 +5,9 @@
 **Active Project:** [PROTOTYPE](https://github.com/Syekiya/AI-Bot/projects/1)
 ## DEPENDENCIES
 
+    node
+    npm
+    yarn
     typescript
     ffmpeg (for Voice support)
     
@@ -14,22 +17,23 @@ You will need to create a Google Cloud account to generate a private key to acce
 
 ## INSTALLING
 
-    git clone
-    npm install
+    Fork this Repo
+    git clone <your forked repo>
+    yarn install
     
 **Config file**: /dist/config.json
 
 Example:
 
     {  
-	    "name":"Alexa",  
+	    "name":"Alexa-Dev[Example]",  
 	    "version":"0.3.0",  
 		"api":{  
 		    "port":1337  
 	    },  
 	    "irc":{  
-		    "nick":"Alexa-dev",  
-		    "ident":"Alexa-dev",  
+		    "nick":"Alexa-Dev[Example]",  
+		    "ident":"Alexa",  
 		    "realname":"Alexa AI Bot",  
 		    "host":"irc.example.net",  
 		    "port":6667,  
@@ -51,12 +55,12 @@ Example:
 
 ## BUILDING
 
-    npm run build
+    yarn run build
 
 
 ## RUNNING
 
-    npm run test
+    yarn run test
 
 
     

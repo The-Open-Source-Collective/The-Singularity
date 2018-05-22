@@ -37,42 +37,56 @@ export class Bot {
         this._initDiscord();
 
         this._addCoreHooks();
+        this._initModules();
         this.lastfm = new LastfmAPI(this.config.lastfm);
     }
 
-    _initConfig() {
+    private _initConfig() {
         let config = jsonfile.readFileSync(__dirname + "/config.json");
 
         this.config = config;
     }
 
-    _initHooks() {
+    private _initHooks() {
         this.hooks = new Hooks();
     }
 
-    _initAPIServer() {
+    private _initAPIServer() {
         this.apiServer = new APIServer(this.config.api.port, this);
     }
 
-    _initArk() {
+    private _initArk() {
         this.ark = new Ark(this.config.ark.host, this.config.ark.port, this.config.ark.password);
     }
 
-    _initIRC() {
+    private _initIRC() {
         this.irc = new IRC(this.config.irc.host, this.config.irc.port, this.config.irc.nick, this.config.irc.ident, this.config.irc.realname);
         let irc = this.irc;
         let ark = this.ark;
     }
 
-    _initDiscord() {
+    private _initDiscord() {
         this.discord = new Discord(this.config.discord.token);
     }
 
-    _initModules() {
+    private _initModules() {
+        const bot = this;
+        let modules = this.modules || new Array<object>();
 
+        fs.readdir(__dirname + "/Modules/", (error, items) => {
+            for (let i=0; i<items.length; i++) {
+                let name = items[i].replace(".js", "");
+                let module = require(__dirname + "/Modules/" + name + "/" + name);
+                let configContents = fs.readFileSync(__dirname + "/Modules/" + name + "/" + "/config.json");
+                let config = configContents.toJSON();
+                let mod = new module[name](bot, config);
+
+                modules.push(mod);
+            }
+        });
     }
 
-    _addCoreHooks() {
+    private _addCoreHooks() {
         let irc = this.irc;
         let ark = this.ark;
         let discord = this.discord;
