@@ -1,10 +1,8 @@
 import {Hooks} from "./Hooks";
 import {APIServer} from "./APIServer";
-import {IRC} from "./Connections/IRC";
-import {Discord} from "./Connections/Discord";
-import {Ark} from "./Connections/Ark";
+import {IRC} from "./Connections/IRC/IRC";
+import {Discord} from "./Connections/Discord/Discord";
 
-import discordjs = require('discord.js');
 import fs = require('fs');
 import jsonfile = require('jsonfile');
 import {VoiceConnection} from "discord.js";
@@ -12,7 +10,6 @@ import {VoiceConnection} from "discord.js";
 let textToSpeech = require('@google-cloud/text-to-speech');
 
 let Readable = require('stream').Readable;
-let LastfmAPI = require('lastfmapi');
 let ytdl = require('ytdl-core');
 
 export class Bot {
@@ -20,11 +17,8 @@ export class Bot {
     hooks: Hooks;
     irc: IRC;
     discord: Discord;
-    ark: Ark;
     apiServer: APIServer;
     modules: Array<object>;
-
-    lastfm: any;
 
     config: any;
 
@@ -38,7 +32,6 @@ export class Bot {
 
         this._addCoreHooks();
         this._initModules();
-        this.lastfm = new LastfmAPI(this.config.lastfm);
     }
 
     private _initConfig() {
@@ -55,14 +48,9 @@ export class Bot {
         this.apiServer = new APIServer(this.config.api.port, this);
     }
 
-    private _initArk() {
-        this.ark = new Ark(this.config.ark.host, this.config.ark.port, this.config.ark.password);
-    }
-
     private _initIRC() {
         this.irc = new IRC(this.config.irc.host, this.config.irc.port, this.config.irc.nick, this.config.irc.ident, this.config.irc.realname);
         let irc = this.irc;
-        let ark = this.ark;
     }
 
     private _initDiscord() {
@@ -88,7 +76,6 @@ export class Bot {
 
     private _addCoreHooks() {
         let irc = this.irc;
-        let ark = this.ark;
         let discord = this.discord;
 
         this.irc.on("motd", () => {
@@ -110,22 +97,7 @@ export class Bot {
             }
         });
 
-        this.discord.on("message", (msg: any) => {
-            if (msg.content.startsWith("!np")) {
-
-                let username = msg.content.split(" ")[1];
-                this.lastfm.user.getRecentTracks({"user": username, "limit": 1}, (error: any, tracks: any) => {
-                    if (tracks.track[0] !== 'undefined') {
-                        let np = tracks.track[0];
-                        if (np['@attr'].nowplaying == 'true') {
-                            discord.msg(msg.channel.name, "[NP] " + username + " is listening to " + np.name + " by " + np.artist['#text']);
-                        }
-                    }
-                });
-            }
-        });
-
-        this.discord.on("message", (msg: any) => {
+        /*this.discord.on("message", (msg: any) => {
             if (msg.content == "!v") {
                 msg.reply('```\r\n'
                                 + '[Voice Support Module]\n'
@@ -153,7 +125,7 @@ export class Bot {
                         break;
 
                     case "play":
-                        if (discord.connection.voice.connections.first()) {
+                        if (discord.client.client.voice.connections.first()) {
                             let voice: VoiceConnection = discord.connection.voice.connections.first();
 
                             if (ytdl.validateURL(args[1])) {
@@ -213,21 +185,9 @@ export class Bot {
                 }
 
             }
-        });
+        });*/
 
-        this.irc.on("message", (from: string, to: string, message: string) => {
-            if (message.startsWith("!np")) {
-                let username = message.split(" ")[1];
-                this.lastfm.user.getRecentTracks({user: username, "limit": 1}, (error: any, tracks: any) => {
-                    if (tracks.track[0] !== 'undefined') {
-                        let np = tracks.track[0];
-                        if (np['@attr'].nowplaying == 'true') {
-                            irc.msg(to, "[NP] " + username + " is listening to " + np.name + " by " + np.artist['#text']);
-                        }
-                    }
-                });
-            }
-        });
+
     }
 
 }
