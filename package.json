@@ -1,5 +1,5 @@
 {
-  "name": "ai-irc",
+  "name": "the-singularity",
   "version": "1.0.0",
   "description": "",
   "main": "dist/Bot.js",
@@ -7,45 +7,45 @@
     "clean": "gulp clean",
     "copyModuleConfigs": "gulp module-configs",
     "compile": "tsc",
-
     "build": "yarn run clean && yarn run compile && yarn run copyModuleConfigs",
-
     "test": "yarn run build && node dist/Bot.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Syekiya/AI-IRC.git"
+    "url": "git+https://github.com/The-Open-Source-Collective/The-Singularity.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "the-open-source-collective",
+  "license": "GPL",
   "bugs": {
-    "url": "https://github.com/Syekiya/AI-IRC/issues"
+    "url": "https://github.com/The-Open-Source-Collective/The-Singularity/issues"
   },
-  "homepage": "https://github.com/Syekiya/AI-IRC#readme",
+  "homepage": "https://github.com/The-Open-Source-Collective/The-Singularity#readme",
   "dependencies": {
+    "@google-cloud/text-to-speech": "^0.1.0",
     "body-parser": "^1.18.3",
+    "bufferutil": "^3.0.5",
     "discord.js": "^11.3.2",
     "express": "^4.16.3",
     "ffmpeg": "0.0.4",
     "ffmpeg-binaries": "^3.2.2",
     "github": "^14.0.0",
+    "grpc": "^1.12.2",
     "irc": "^0.5.2",
     "jsonfile": "^4.0.0",
     "lastfmapi": "^0.1.1",
-    "node-opus": "^0.3.0",
     "rcon": "^1.0.3",
     "request": "^2.86.0",
+    "uws": "^9.14.0",
     "ytdl-core": "^0.20.4"
   },
   "devDependencies": {
-    "@google-cloud/text-to-speech": "^0.1.0",
     "@types/alexa-voice-service": "0.0.0",
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.11.1",
     "@types/github": "^7.1.0",
+    "@types/irc": "^0.3.32",
     "@types/jsonfile": "^4.0.1",
     "@types/node": "^10.1.2",
-    "@types/irc": "^0.3.32",
     "del": "^3.0.0",
     "gulp": "^3.9.1"
   }
